@@ -11,7 +11,8 @@
 - 将该密钥和播放链接传入 `NewPlayer` 进行播放。
 
 ## 环境配置:
-- 测试网: https://gateway.testnet.newkeeper.org/api/v1/evt/check/
+- NewKeeper 测试网: https://gateway.testnet.newkeeper.org/api/v1/evt/check/
+- NewKeeper 正式网: https://gateway.newkeeper.org/api/v1/evt/check/
 
 ## Demo 环境要求:
 - python3, pip
