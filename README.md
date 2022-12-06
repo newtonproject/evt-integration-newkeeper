@@ -10,6 +10,9 @@
 - 请求 `NewKeeper` 获取加密密钥.
 - 将该密钥和播放链接传入 `NewPlayer` 进行播放。
 
+## 环境配置:
+- 测试网: https://newkeeper-test.devnet.newtonproject.org/api/v1/evt/check/
+
 ## Demo 环境要求:
 - python3, pip
 
