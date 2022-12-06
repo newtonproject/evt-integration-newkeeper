@@ -61,7 +61,7 @@ def sign_hmac(data, secret, prefix='', use_urlencode=False, joint='&'):
 
 
 wallet_private_key = '0x37f4e6e04eb21ee5af76f680de85bde687efbf2b5e71e1adacb38ab2784a1b4f'
-message = 'abcdefgjkqwerrttyuio'  # 随机生成，不要纯数字，也不要十六进制字符串
+message = 'evt' + str(time.time())
 
 rpc_url = "https://rpc1.newchain.newtonproject.org/"
 w3 = Web3(Web3.HTTPProvider(rpc_url))
