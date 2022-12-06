@@ -27,4 +27,4 @@ python demo.py
 ```
 
 ## API 
-(API说明)[api.md]
+[API说明](api.md)
