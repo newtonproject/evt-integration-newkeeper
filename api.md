@@ -3,7 +3,8 @@
 
 **请求地址**:
 
- `https://gateway.testnet.newkeeper.org/api/v1/evt/check/`
+- NewKeeper 测试网: https://gateway.testnet.newkeeper.org/api/v1/evt/check/
+- NewKeeper 正式网: https://gateway.newkeeper.org/api/v1/evt/check/
 
 
 **请求说明**:
