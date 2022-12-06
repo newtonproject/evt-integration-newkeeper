@@ -17,6 +17,12 @@ pip install -r requirements.txt
 
 # LIBS
 
+# config
+wallet_private_key = '0x37f4e6e04eb21ee5af76f680de85bde687efbf2b5e71e1adacb38ab2784a1b4f'
+rpc_url = "https://rpc1.newchain.newtonproject.org/"
+app_key = 'd41d8cd98f00b204e9800998ecf8427e'
+app_secret = '75d78bdb89dd0baeaeacdbef66ba4240'
+
 '''
 AES ENCRYPT
 '''
@@ -60,39 +66,35 @@ def sign_hmac(data, secret, prefix='', use_urlencode=False, joint='&'):
     return signed_string
 
 
-wallet_private_key = '0x37f4e6e04eb21ee5af76f680de85bde687efbf2b5e71e1adacb38ab2784a1b4f'
-message = 'evt' + str(time.time())
+def get_secret():
+    w3 = Web3(Web3.HTTPProvider(rpc_url))
+    message = 'evt' + str(time.time())
+    signable_message = encode_defunct(text=message)
+    signed_message = w3.eth.account.sign_message(signable_message, private_key=wallet_private_key)
+    data = {
+        'contract_address': '0xCFeAA0345b6b8B9C701f01e519875455A90D435b',
+        'token_id': '1',
+        'sign_r': hex(signed_message.r),
+        'sign_s': hex(signed_message.s),
+        'sign_v': signed_message.v,
+        'sign_message': aes_encrypt(app_secret, message),
+        'app_key': app_key,
+        'timestamp': time.time(),
+    }
+    generate_sign = sign_hmac(data, app_secret)
+    headers = {
+        'content-type': 'application/json',
+        'Authorization': generate_sign,
+    }
+    api_url = 'https://newkeeper-test.devnet.newtonproject.org/api/v1/evt/check/'
+    response = requests.post(api_url, data=json.dumps(data), headers=headers)
+    result = json.loads(response.text)
 
-rpc_url = "https://rpc1.newchain.newtonproject.org/"
-w3 = Web3(Web3.HTTPProvider(rpc_url))
-signable_message = encode_defunct(text=message)
-signed_message = w3.eth.account.sign_message(signable_message, private_key=wallet_private_key)
+    if result['error_code'] == 1:
+        csm_version = result['result']['csm_version']
+        private_key = result['result']['private_key']
+        private_key = aes_decrypt(app_secret, private_key)
+        print(private_key)
 
-app_key = 'd41d8cd98f00b204e9800998ecf8427e'
-app_secret = '75d78bdb89dd0baeaeacdbef66ba4240'
-
-data = {
-    'contract_address': '0xCFeAA0345b6b8B9C701f01e519875455A90D435b',
-    'token_id': '1',
-    'sign_r': hex(signed_message.r),
-    'sign_s': hex(signed_message.s),
-    'sign_v': signed_message.v,
-    'sign_message': aes_encrypt(app_secret, message),
-    'app_key': app_key,
-    'timestamp': time.time(),
-}
-
-generate_sign = sign_hmac(data, app_secret)
-headers = {
-    'content-type': 'application/json',
-    'Authorization': generate_sign,
-}
-api_url = 'https://newkeeper-test.devnet.newtonproject.org/api/v1/evt/check/'
-response = requests.post(api_url, data=json.dumps(data), headers=headers)
-result = json.loads(response.text)
-
-if result['error_code'] == 1:
-    csm_version = result['result']['csm_version']
-    private_key = result['result']['private_key']
-    private_key = aes_decrypt(app_secret, private_key)
-    print(private_key)
+if __name__ == '__main__':
+    get_secret()
