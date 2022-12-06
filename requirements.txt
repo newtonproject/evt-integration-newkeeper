@@ -1,0 +1,1 @@
+newchain-web3==0.2.2

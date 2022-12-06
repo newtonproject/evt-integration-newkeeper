@@ -12,7 +12,7 @@ from newchain_account.messages import encode_defunct
 
 '''
 First of all, install newchain-web3:
-pip install newchain-web3==0.2.2
+pip install -r requirements.txt
 '''
 
 # LIBS
