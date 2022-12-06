@@ -86,7 +86,7 @@ def get_secret():
         'content-type': 'application/json',
         'Authorization': generate_sign,
     }
-    api_url = 'https://newkeeper-test.devnet.newtonproject.org/api/v1/evt/check/'
+    api_url = 'https://gateway.testnet.newkeeper.org/api/v1/evt/check/'
     response = requests.post(api_url, data=json.dumps(data), headers=headers)
     result = json.loads(response.text)
 
